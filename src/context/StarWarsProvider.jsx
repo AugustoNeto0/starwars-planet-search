@@ -6,6 +6,8 @@ export const StarWarsContext = createContext();
 
 const StarWarsProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [filterByName, setFilterByName] = useState('');
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
 
   const fetchPlanets = async () => {
     const planetsData = await getPlanetsData();
@@ -14,11 +16,18 @@ const StarWarsProvider = ({ children }) => {
 
   useEffect(() => {
     fetchPlanets();
-  }, []);
+    const filteredByName = data.filter((planet) => planet.name
+      .toLowerCase().includes(filterByName))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    setFilteredPlanets(filteredByName);
+  }, [filterByName, data]);
 
   const initialState = {
     data,
     setData,
+    filterByName,
+    setFilterByName,
+    filteredPlanets,
   };
 
   return (
