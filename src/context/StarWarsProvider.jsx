@@ -22,7 +22,6 @@ const StarWarsProvider = ({ children }) => {
 
   useEffect(() => {
     fetchPlanets();
-    // console.log(filterByComparison, filterByColumn, filterByValue);
     if (handleClick) {
       const filteredByName = data.filter((planet) => {
         if (filterByComparison === 'maior que') {

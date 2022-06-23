@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StarWarsContext } from '../context/StarWarsProvider';
 
 export default function Filters() {
@@ -10,6 +10,11 @@ export default function Filters() {
     filterByComparison,
     filterByValue,
     setHandleClick } = useContext(StarWarsContext);
+  const [filteredOptions, setFilteredOptions] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+
+  const dropDownOptions = ['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
   const handleChange = ({ target }) => {
     if (target.type === 'text') setFilterByName(target.value);
@@ -23,6 +28,7 @@ export default function Filters() {
 
   const handleClick = () => {
     setHandleClick(true);
+    setFilteredOptions(dropDownOptions.filter((option) => option !== filterByColumn));
   };
 
   return (
@@ -38,11 +44,9 @@ export default function Filters() {
         onChange={ (e) => handleSelection(e) }
         value={ filterByColumn }
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        {filteredOptions.map((option, index) => (
+          <option key={ index }>{option}</option>
+        ))}
       </select>
       <select
         id="comparison-filter"
