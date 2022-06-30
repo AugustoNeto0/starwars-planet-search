@@ -3,32 +3,55 @@ import { StarWarsContext } from '../context/StarWarsProvider';
 
 export default function Filters() {
   const { setFilterByName,
-    setFilterByColumn,
-    setFilterByComparison,
-    setFilterByValue,
+    // setFilterByColumn,
+    // setFilterByComparison,
+    // setFilterByValue,
     filterByColumn,
-    filterByComparison,
-    filterByValue,
-    setHandleClick } = useContext(StarWarsContext);
+    setFilterByNumericValues } = useContext(StarWarsContext);
   const [filteredOptions, setFilteredOptions] = useState(['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  // const [columnOption] = useState('');
+  // const [comparisonOption] = useState('');
+  // const [value] = useState(0);
+
+  const [filter, setFilter] = useState(
+    {
+      column: 'population',
+      comparison: 'maior que',
+      value: 0,
+    },
+  );
 
   const dropDownOptions = ['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
   const handleChange = ({ target }) => {
     if (target.type === 'text') setFilterByName(target.value);
-    else setFilterByValue(target.value);
+    else {
+      setFilter((prevState) => ({
+        ...prevState,
+        value: target.value }));
+    }
   };
 
   const handleSelection = ({ target }) => {
-    if (target.id === 'column-filter') setFilterByColumn(target.value);
-    else setFilterByComparison(target.value);
+    if (target.id === 'column-filter') {
+      setFilter((prevState) => ({
+        ...prevState,
+        column: target.value }));
+    } else {
+      setFilter((prevState) => ({
+        ...prevState,
+        comparison: target.value }));
+    }
   };
 
   const handleClick = () => {
-    setHandleClick(true);
     setFilteredOptions(dropDownOptions.filter((option) => option !== filterByColumn));
+    setFilterByNumericValues(filter);
+    // setFilterByColumn(columnOption);
+    // setFilterByComparison(comparisonOption);
+    // setFilterByValue(value);
   };
 
   return (
@@ -42,17 +65,19 @@ export default function Filters() {
         id="column-filter"
         data-testid="column-filter"
         onChange={ (e) => handleSelection(e) }
-        value={ filterByColumn }
       >
-        {filteredOptions.map((option, index) => (
-          <option key={ index }>{option}</option>
-        ))}
+        {filteredOptions.map((option, index) => {
+          if (option === 'population') {
+            return <option defaultValue="population" key={ index }>{option}</option>;
+          }
+          return <option key={ index }>{option}</option>;
+        })}
       </select>
       <select
         id="comparison-filter"
         data-testid="comparison-filter"
         onChange={ (e) => handleSelection(e) }
-        value={ filterByComparison }
+        defaultValue="maior que"
       >
         <option>maior que</option>
         <option>igual a</option>
@@ -63,7 +88,7 @@ export default function Filters() {
         type="number"
         data-testid="value-filter"
         onChange={ (e) => handleChange(e) }
-        value={ filterByValue }
+        defaultValue="0"
       />
       <button
         type="button"
