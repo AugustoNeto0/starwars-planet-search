@@ -8,8 +8,8 @@ export default function Filters() {
     // setFilterByValue,
     // filterByColumn,
     setFilterByNumericValues } = useContext(StarWarsContext);
-  // const [filteredOptions, setFilteredOptions] = useState(['population',
-  //   'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  const [filteredOptions] = useState([]);
+  const [options, setOptions] = useState([]);
   // const [columnOption] = useState('');
   // const [comparisonOption] = useState('');
   // const [value] = useState(0);
@@ -49,6 +49,8 @@ export default function Filters() {
   };
 
   const handleClick = () => {
+    filteredOptions.push(filter.column);
+    setOptions(dropDownOptions.filter((option) => !filteredOptions.includes(option)));
     setFilterCounter(filterCounter + 1);
     // setFilteredOptions(dropDownOptions.filter((option) => option !== filterByColumn));
     setFilter((prevState) => ({
@@ -72,8 +74,12 @@ export default function Filters() {
         data-testid="column-filter"
         onChange={ (e) => handleSelection(e) }
       >
-        {dropDownOptions.map((option, index) => (
-          <option defaultValue="population" key={ index }>{option}</option>))}
+        {
+          options.length ? options.map((option, index) => (
+            <option defaultValue="population" key={ index }>{option}</option>))
+            : dropDownOptions.map((option, index) => (
+              <option defaultValue="population" key={ index }>{option}</option>))
+        }
       </select>
       <select
         id="comparison-filter"

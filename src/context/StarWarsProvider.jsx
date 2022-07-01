@@ -55,33 +55,11 @@ const StarWarsProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    console.log(filteredByNumericValues);
-    console.log(filterByNumericValues);
     if (filterByName) {
       const filteredByName = data.filter((planet) => planet.name
         .toLowerCase()
         .includes(filterByName));
       setFilteredPlanets(filteredByName);
-      // const filteredByName = filteredPlanets.filter((planet) => {
-      //   if (filterByComparison === 'maior que') {
-      //     return planet.name
-      //       .toLowerCase()
-      //       .includes(filterByName)
-      //       && parseFloat(planet[filterByColumn]) > parseFloat(filterByValue);
-      //   } if (filterByComparison === 'menor que') {
-      //     return planet.name
-      //       .toLowerCase()
-      //       .includes(filterByName)
-      //       && parseFloat(planet[filterByColumn]) < parseFloat(filterByValue);
-      //   }
-      //   if (filterByComparison === 'igual a') {
-      //     return planet.name
-      //       .toLowerCase()
-      //       .includes(filterByName)
-      //       && parseFloat(planet[filterByColumn]) === parseFloat(filterByValue);
-      //   } return null;
-      // });
-      // setFilteredPlanets(filteredByName);
     } else if (!filterByNumericValues.filtersApplied) setFilteredPlanets(data);
     else setFilteredPlanets(filteredByNumericValues);
   }, [filterByNumericValues, filterByName, data]);
