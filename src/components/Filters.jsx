@@ -6,10 +6,10 @@ export default function Filters() {
     // setFilterByColumn,
     // setFilterByComparison,
     // setFilterByValue,
-    filterByColumn,
+    // filterByColumn,
     setFilterByNumericValues } = useContext(StarWarsContext);
-  const [filteredOptions, setFilteredOptions] = useState(['population',
-    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  // const [filteredOptions, setFilteredOptions] = useState(['population',
+  //   'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   // const [columnOption] = useState('');
   // const [comparisonOption] = useState('');
   // const [value] = useState(0);
@@ -19,8 +19,10 @@ export default function Filters() {
       column: 'population',
       comparison: 'maior que',
       value: 0,
+      filtersApplied: 1,
     },
   );
+  const [filterCounter, setFilterCounter] = useState(1);
 
   const dropDownOptions = ['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
@@ -47,7 +49,11 @@ export default function Filters() {
   };
 
   const handleClick = () => {
-    setFilteredOptions(dropDownOptions.filter((option) => option !== filterByColumn));
+    setFilterCounter(filterCounter + 1);
+    // setFilteredOptions(dropDownOptions.filter((option) => option !== filterByColumn));
+    setFilter((prevState) => ({
+      ...prevState,
+      filtersApplied: filterCounter }));
     setFilterByNumericValues(filter);
     // setFilterByColumn(columnOption);
     // setFilterByComparison(comparisonOption);
@@ -66,12 +72,8 @@ export default function Filters() {
         data-testid="column-filter"
         onChange={ (e) => handleSelection(e) }
       >
-        {filteredOptions.map((option, index) => {
-          if (option === 'population') {
-            return <option defaultValue="population" key={ index }>{option}</option>;
-          }
-          return <option key={ index }>{option}</option>;
-        })}
+        {dropDownOptions.map((option, index) => (
+          <option defaultValue="population" key={ index }>{option}</option>))}
       </select>
       <select
         id="comparison-filter"

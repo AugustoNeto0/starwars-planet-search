@@ -11,7 +11,12 @@ const StarWarsProvider = ({ children }) => {
   const [filterByColumn, setFilterByColumn] = useState('population');
   const [filterByComparison, setFilterByComparison] = useState('maior que');
   const [filterByValue, setFilterByValue] = useState(0);
-  const [filterByNumericValues, setFilterByNumericValues] = useState({});
+  const [filterByNumericValues, setFilterByNumericValues] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+    filtersApplied: 0,
+  });
 
   const fetchPlanets = async () => {
     const planetsData = await getPlanetsData();
@@ -25,7 +30,32 @@ const StarWarsProvider = ({ children }) => {
     }
   }, []);
 
+  const filteredByNumericValues = filteredPlanets.filter((planet) => {
+    const comparisonFilter = () => {
+      switch (filterByNumericValues.comparison) {
+      case 'maior que':
+        return parseFloat(planet[filterByNumericValues.column])
+          > parseFloat(filterByNumericValues.value) && planet.name
+          .toLowerCase()
+          .includes(filterByName);
+      case 'igual a':
+        return parseFloat(planet[filterByNumericValues.column])
+          === parseFloat(filterByNumericValues.value) && planet.name
+          .toLowerCase()
+          .includes(filterByName);
+      case 'menor que':
+        return parseFloat(planet[filterByNumericValues.column])
+          < parseFloat(filterByNumericValues.value) && planet.name
+          .toLowerCase()
+          .includes(filterByName);
+      default:
+      }
+    };
+    return comparisonFilter();
+  });
+
   useEffect(() => {
+    console.log(filteredByNumericValues);
     console.log(filterByNumericValues);
     if (filterByName) {
       const filteredByName = data.filter((planet) => planet.name
@@ -52,7 +82,8 @@ const StarWarsProvider = ({ children }) => {
       //   } return null;
       // });
       // setFilteredPlanets(filteredByName);
-    } else setFilteredPlanets(data);
+    } else if (!filterByNumericValues.filtersApplied) setFilteredPlanets(data);
+    else setFilteredPlanets(filteredByNumericValues);
   }, [filterByNumericValues, filterByName, data]);
 
   const initialState = {
