@@ -10,6 +10,7 @@ export default function Filters() {
     filters,
     setFilters,
     dropDownOptions,
+    setFilterLength,
     setFilterByNumericValues } = useContext(StarWarsContext);
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [options, setOptions] = useState([]);
@@ -53,12 +54,13 @@ export default function Filters() {
   };
 
   const handleRemoveSingleFilter = ({ target }) => {
-    setFilterCounter(filterCounter - 1);
     setFilters(filters.filter(({ column }) => column !== target.id));
     setFilteredOptions(filteredOptions.filter((option) => option !== target.id));
-    setFilterByNumericValues((prevState) => ({
-      ...prevState,
-      filtersApplied: 0 }));
+    if (!(filters.length - 1)) {
+      setFilterByNumericValues((prevState) => ({
+        ...prevState,
+        filtersApplied: 0 }));
+    }
   };
 
   const handleClick = () => {
@@ -70,6 +72,7 @@ export default function Filters() {
       filtersApplied: filterCounter }));
     setFilterByNumericValues(filter);
     filters.push(filter);
+    setFilterLength(filters.length);
   };
 
   return (

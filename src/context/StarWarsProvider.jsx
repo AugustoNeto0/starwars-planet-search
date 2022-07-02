@@ -12,6 +12,7 @@ const StarWarsProvider = ({ children }) => {
   const [filterByComparison, setFilterByComparison] = useState('maior que');
   const [filterByValue, setFilterByValue] = useState(0);
   const [filters, setFilters] = useState([]);
+  const [filterLength, setFilterLength] = useState(0);
   const [filterByNumericValues, setFilterByNumericValues] = useState([{
     column: 'population',
     comparison: 'maior que',
@@ -39,29 +40,41 @@ const StarWarsProvider = ({ children }) => {
     }
   }, []);
 
-  const filteredByNumericValues = filteredPlanets.filter((planet) => {
-    const comparisonFilter = () => {
-      switch (filterByNumericValues.comparison) {
-      case 'maior que':
-        return parseFloat(planet[filterByNumericValues.column])
-          > parseFloat(filterByNumericValues.value) && planet.name
-          .toLowerCase()
-          .includes(filterByName);
-      case 'igual a':
-        return parseFloat(planet[filterByNumericValues.column])
-          === parseFloat(filterByNumericValues.value) && planet.name
-          .toLowerCase()
-          .includes(filterByName);
-      case 'menor que':
-        return parseFloat(planet[filterByNumericValues.column])
-          < parseFloat(filterByNumericValues.value) && planet.name
-          .toLowerCase()
-          .includes(filterByName);
-      default:
-      }
-    };
-    return comparisonFilter();
-  });
+  const comparisonFilter = (planet, index) => {
+    switch (filters[index].comparison) {
+    case 'maior que':
+      return parseFloat(planet[filters[index].column])
+        > parseFloat(filters[index].value) && planet.name
+        .toLowerCase()
+        .includes(filterByName);
+    case 'igual a':
+      return parseFloat(planet[filters[index].column])
+        === parseFloat(filters[index].value) && planet.name
+        .toLowerCase()
+        .includes(filterByName);
+    case 'menor que':
+      return parseFloat(planet[filters[index].column])
+        < parseFloat(filters[index].value) && planet.name
+        .toLowerCase()
+        .includes(filterByName);
+    default:
+    }
+  };
+
+  const filteredByNumericValues = () => {
+    if (filters.length !== filterLength) {
+      return data.filter((planet) => {
+        if (filters.length) {
+          return filters.some(() => comparisonFilter(planet, filters.length - 1));
+        } return null;
+      });
+    } return filteredPlanets.filter((planet) => {
+      console.log(planet);
+      if (filters.length) {
+        return filters.some(() => comparisonFilter(planet, filters.length - 1));
+      } return null;
+    });
+  };
 
   useEffect(() => {
     if (filterByName) {
@@ -72,8 +85,10 @@ const StarWarsProvider = ({ children }) => {
     } else if
     (!filterByNumericValues.filtersApplied) {
       setFilteredPlanets(data);
-    } else setFilteredPlanets(filteredByNumericValues);
-  }, [filterByNumericValues, filterByName, data]);
+    } else {
+      setFilteredPlanets(filteredByNumericValues());
+    }
+  }, [filterByNumericValues, filterByName, data, filters]);
 
   const initialState = {
     data,
@@ -95,6 +110,8 @@ const StarWarsProvider = ({ children }) => {
     sortOption,
     filters,
     setFilters,
+    filterLength,
+    setFilterLength,
   };
 
   return (
