@@ -3,6 +3,7 @@ import { StarWarsContext } from '../context/StarWarsProvider';
 
 export default function Table() {
   const { filteredPlanets } = useContext(StarWarsContext);
+
   return (
     <table>
       <thead>

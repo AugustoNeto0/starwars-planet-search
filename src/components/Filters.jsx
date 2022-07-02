@@ -7,13 +7,10 @@ export default function Filters() {
     // setFilterByComparison,
     // setFilterByValue,
     // filterByColumn,
+    dropDownOptions,
     setFilterByNumericValues } = useContext(StarWarsContext);
   const [filteredOptions] = useState([]);
   const [options, setOptions] = useState([]);
-  // const [columnOption] = useState('');
-  // const [comparisonOption] = useState('');
-  // const [value] = useState(0);
-
   const [filter, setFilter] = useState(
     {
       column: 'population',
@@ -23,9 +20,6 @@ export default function Filters() {
     },
   );
   const [filterCounter, setFilterCounter] = useState(1);
-
-  const dropDownOptions = ['population',
-    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
   const handleChange = ({ target }) => {
     if (target.type === 'text') setFilterByName(target.value);
@@ -48,18 +42,21 @@ export default function Filters() {
     }
   };
 
+  const removeFilters = () => {
+    setFilterByNumericValues((prevState) => ({
+      ...prevState,
+      filtersApplied: 0 }));
+    setOptions([]);
+  };
+
   const handleClick = () => {
     filteredOptions.push(filter.column);
     setOptions(dropDownOptions.filter((option) => !filteredOptions.includes(option)));
     setFilterCounter(filterCounter + 1);
-    // setFilteredOptions(dropDownOptions.filter((option) => option !== filterByColumn));
     setFilter((prevState) => ({
       ...prevState,
       filtersApplied: filterCounter }));
     setFilterByNumericValues(filter);
-    // setFilterByColumn(columnOption);
-    // setFilterByComparison(comparisonOption);
-    // setFilterByValue(value);
   };
 
   return (
@@ -104,6 +101,13 @@ export default function Filters() {
         onClick={ () => handleClick() }
       >
         Filtrar
+      </button>
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ () => removeFilters() }
+      >
+        Remover Filtros
       </button>
     </form>
   );

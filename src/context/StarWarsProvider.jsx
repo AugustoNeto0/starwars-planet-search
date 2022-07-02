@@ -17,10 +17,18 @@ const StarWarsProvider = ({ children }) => {
     value: 0,
     filtersApplied: 0,
   });
+  const [dropDownOptions] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  const [sortOption, setSortOption] = useState({
+    column: 'population',
+    order: 'ASC',
+  });
 
   const fetchPlanets = async () => {
+    const negative = -1;
     const planetsData = await getPlanetsData();
-    setData(planetsData);
+    setData(planetsData
+      .sort((planetA, planetB) => ((planetA.name > planetB.name) ? 1 : negative)));
   };
 
   useEffect(() => {
@@ -60,8 +68,10 @@ const StarWarsProvider = ({ children }) => {
         .toLowerCase()
         .includes(filterByName));
       setFilteredPlanets(filteredByName);
-    } else if (!filterByNumericValues.filtersApplied) setFilteredPlanets(data);
-    else setFilteredPlanets(filteredByNumericValues);
+    } else if
+    (!filterByNumericValues.filtersApplied) {
+      setFilteredPlanets(data);
+    } else setFilteredPlanets(filteredByNumericValues);
   }, [filterByNumericValues, filterByName, data]);
 
   const initialState = {
@@ -70,6 +80,7 @@ const StarWarsProvider = ({ children }) => {
     filterByName,
     setFilterByName,
     filteredPlanets,
+    setFilteredPlanets,
     filterByColumn,
     setFilterByColumn,
     filterByComparison,
@@ -78,6 +89,9 @@ const StarWarsProvider = ({ children }) => {
     setFilterByValue,
     filterByNumericValues,
     setFilterByNumericValues,
+    dropDownOptions,
+    setSortOption,
+    sortOption,
   };
 
   return (
