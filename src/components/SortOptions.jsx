@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { StarWarsContext } from '../context/StarWarsProvider';
 
-export default function SortColumn() {
+export default function SortOptions() {
   const { dropDownOptions,
     filteredPlanets, setFilteredPlanets } = useContext(StarWarsContext);
   const [sort, setSort] = useState({

@@ -7,9 +7,11 @@ export default function Filters() {
     // setFilterByComparison,
     // setFilterByValue,
     // filterByColumn,
+    filters,
+    setFilters,
     dropDownOptions,
     setFilterByNumericValues } = useContext(StarWarsContext);
-  const [filteredOptions] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState([]);
   const [options, setOptions] = useState([]);
   const [filter, setFilter] = useState(
     {
@@ -47,6 +49,16 @@ export default function Filters() {
       ...prevState,
       filtersApplied: 0 }));
     setOptions([]);
+    setFilters([]);
+  };
+
+  const handleRemoveSingleFilter = ({ target }) => {
+    setFilterCounter(filterCounter - 1);
+    setFilters(filters.filter(({ column }) => column !== target.id));
+    setFilteredOptions(filteredOptions.filter((option) => option !== target.id));
+    setFilterByNumericValues((prevState) => ({
+      ...prevState,
+      filtersApplied: 0 }));
   };
 
   const handleClick = () => {
@@ -57,58 +69,82 @@ export default function Filters() {
       ...prevState,
       filtersApplied: filterCounter }));
     setFilterByNumericValues(filter);
+    filters.push(filter);
   };
 
   return (
-    <form>
-      <input
-        type="text"
-        data-testid="name-filter"
-        onChange={ (e) => handleChange(e) }
-      />
-      <select
-        id="column-filter"
-        data-testid="column-filter"
-        onChange={ (e) => handleSelection(e) }
-      >
-        {
-          options.length ? options.map((option, index) => (
-            <option defaultValue="population" key={ index }>{option}</option>))
-            : dropDownOptions.map((option, index) => (
+    <section className="filters-section">
+      <form>
+        <input
+          type="text"
+          data-testid="name-filter"
+          onChange={ (e) => handleChange(e) }
+        />
+        <select
+          id="column-filter"
+          data-testid="column-filter"
+          onChange={ (e) => handleSelection(e) }
+        >
+          {
+            options.length ? options.map((option, index) => (
               <option defaultValue="population" key={ index }>{option}</option>))
+              : dropDownOptions.map((option, index) => (
+                <option defaultValue="population" key={ index }>{option}</option>))
+          }
+        </select>
+        <select
+          id="comparison-filter"
+          data-testid="comparison-filter"
+          onChange={ (e) => handleSelection(e) }
+          defaultValue="maior que"
+        >
+          <option>maior que</option>
+          <option>igual a</option>
+          <option>menor que</option>
+        </select>
+        <input
+          id="value-filter"
+          type="number"
+          data-testid="value-filter"
+          onChange={ (e) => handleChange(e) }
+          defaultValue="0"
+        />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ () => handleClick() }
+        >
+          Filtrar
+        </button>
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ () => removeFilters() }
+        >
+          Remover Filtros
+        </button>
+      </form>
+      <div>
+        {
+          filters.length ? filters.map((filterParam, index) => (
+            <p key={ index } data-testid="filter">
+              {filterParam.column}
+              -
+              {filterParam.comparison}
+              -
+              {filterParam.value}
+              <button
+                id={ filterParam.column }
+                type="button"
+                onClick={ (e) => handleRemoveSingleFilter(e) }
+              >
+                remover filtro
+              </button>
+
+            </p>))
+            : null
         }
-      </select>
-      <select
-        id="comparison-filter"
-        data-testid="comparison-filter"
-        onChange={ (e) => handleSelection(e) }
-        defaultValue="maior que"
-      >
-        <option>maior que</option>
-        <option>igual a</option>
-        <option>menor que</option>
-      </select>
-      <input
-        id="value-filter"
-        type="number"
-        data-testid="value-filter"
-        onChange={ (e) => handleChange(e) }
-        defaultValue="0"
-      />
-      <button
-        type="button"
-        data-testid="button-filter"
-        onClick={ () => handleClick() }
-      >
-        Filtrar
-      </button>
-      <button
-        type="button"
-        data-testid="button-remove-filters"
-        onClick={ () => removeFilters() }
-      >
-        Remover Filtros
-      </button>
-    </form>
+      </div>
+    </section>
   );
 }

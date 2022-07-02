@@ -11,12 +11,13 @@ const StarWarsProvider = ({ children }) => {
   const [filterByColumn, setFilterByColumn] = useState('population');
   const [filterByComparison, setFilterByComparison] = useState('maior que');
   const [filterByValue, setFilterByValue] = useState(0);
-  const [filterByNumericValues, setFilterByNumericValues] = useState({
+  const [filters, setFilters] = useState([]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState([{
     column: 'population',
     comparison: 'maior que',
     value: 0,
-    filtersApplied: 0,
-  });
+    filtersApplied: 1,
+  }]);
   const [dropDownOptions] = useState(['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const [sortOption, setSortOption] = useState({
@@ -92,6 +93,8 @@ const StarWarsProvider = ({ children }) => {
     dropDownOptions,
     setSortOption,
     sortOption,
+    filters,
+    setFilters,
   };
 
   return (
