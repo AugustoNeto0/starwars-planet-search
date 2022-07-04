@@ -77,7 +77,7 @@ export default function SortOptions() {
           data-testid="column-sort-input-asc"
           onChange={ (e) => handleRadioChange(e) }
         />
-        Ascendente
+        <span>Ascendente</span>
         <input
           name="sort-radio-btn"
           type="radio"
@@ -85,7 +85,7 @@ export default function SortOptions() {
           data-testid="column-sort-input-desc"
           onChange={ (e) => handleRadioChange(e) }
         />
-        Descendente
+        <span>Descendente</span>
         <button
           type="button"
           data-testid="column-sort-button"

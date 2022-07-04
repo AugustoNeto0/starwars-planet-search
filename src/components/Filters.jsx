@@ -126,7 +126,7 @@ export default function Filters() {
       <div>
         {
           filters.length ? filters.map((filterParam, index) => (
-            <p key={ index } data-testid="filter">
+            <p className="filter-applied" key={ index } data-testid="filter">
               {filterParam.column}
               -
               {filterParam.comparison}

@@ -4,3 +4,16 @@ body {
   background: url('http://wallpapercave.com/wp/pEeUsp1.jpg');
   font-family: News Cycle , sans-serif;
 }
+
+.filter-applied {
+  color: white;
+}
+
+form span {
+  color: white;
+}
+
+.main-logo {
+  display: flex;
+  justify-content: center;
+}
