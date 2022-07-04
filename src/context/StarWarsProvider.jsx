@@ -8,9 +8,6 @@ const StarWarsProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [filterByName, setFilterByName] = useState('');
   const [filteredPlanets, setFilteredPlanets] = useState([]);
-  const [filterByColumn, setFilterByColumn] = useState('population');
-  const [filterByComparison, setFilterByComparison] = useState('maior que');
-  const [filterByValue, setFilterByValue] = useState(0);
   const [filters, setFilters] = useState([]);
   const [filterLength, setFilterLength] = useState(0);
   const [filterByNumericValues, setFilterByNumericValues] = useState([{
@@ -97,12 +94,6 @@ const StarWarsProvider = ({ children }) => {
     setFilterByName,
     filteredPlanets,
     setFilteredPlanets,
-    filterByColumn,
-    setFilterByColumn,
-    filterByComparison,
-    setFilterByComparison,
-    filterByValue,
-    setFilterByValue,
     filterByNumericValues,
     setFilterByNumericValues,
     dropDownOptions,

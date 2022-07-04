@@ -1,0 +1,49 @@
+a {
+  color: white;
+}
+
+a:hover {
+  color: #f2ec57;
+}
+
+.planet-name {
+  background-color: white;
+  color: black;
+  font-weight: 900;
+}
+
+.planet-data:hover {
+  background-color: black;
+  overflow: visible;
+  transform: scale(1.454, 1.34);
+  transform-origin: center;
+}
+
+table {
+  margin: auto;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-body {
+  color: white;
+}
+
+.table-body tr:hover {
+  color: #f2ec57;
+}
+
+.table-head {
+  background-color: lightgray;
+}
+
+td {
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+th {
+  width: fit-content;
+}

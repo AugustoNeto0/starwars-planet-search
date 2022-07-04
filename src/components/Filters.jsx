@@ -3,10 +3,6 @@ import { StarWarsContext } from '../context/StarWarsProvider';
 
 export default function Filters() {
   const { setFilterByName,
-    // setFilterByColumn,
-    // setFilterByComparison,
-    // setFilterByValue,
-    // filterByColumn,
     filters,
     setFilters,
     dropDownOptions,
